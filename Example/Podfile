@@ -1,0 +1,6 @@
+use_frameworks!
+target 'OneSolutionAppInterface_Tests' do
+  pod 'OneSolutionAppInterface', :path => '../'
+  
+  
+end
