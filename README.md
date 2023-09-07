@@ -22,7 +22,7 @@ pod 'OneSolutionAppInterface'
 
 ## Author
 
-Sreekanth Reddy Tadi, sreekanth.tadi@ivycomptech.com
+Sreekanth Reddy Tadi, sreekanth.t.bs@gmail.com
 
 ## License
 
