@@ -1,0 +1,22 @@
+{
+  "name": "OneSolutionAppInterface",
+  "version": "0.1.0",
+  "summary": "A short description of OneSolutionAppInterface.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/Sreekanth Reddy Tadi/OneSolutionAppInterface",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Sreekanth Reddy Tadi": "sreekanth.tadi@ivycomptech.com"
+  },
+  "source": {
+    "git": "https://github.com/Sreekanth Reddy Tadi/OneSolutionAppInterface.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source_files": "OneSolutionAppInterface/Classes/**/*"
+}
