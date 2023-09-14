@@ -21,11 +21,11 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/sreekanth.tadi/OneSolutionAppInterface'
+  s.homepage         = 'https://github.com/tadisreekanth/OneSolutionAppInterface'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Sreekanth Reddy Tadi' => 'sreekanth.t.bs@gmail.com' }
-  s.source           = { :git => 'https://github.com/sreekanth.tadi/OneSolutionAppInterface.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/tadisreekanth/OneSolutionAppInterface.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '13.0'
