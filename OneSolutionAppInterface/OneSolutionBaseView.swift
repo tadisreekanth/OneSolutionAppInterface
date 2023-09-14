@@ -25,7 +25,7 @@ struct OneSolutionBaseView<Content: View>: View {
         )
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
-        .updateNavigationTitleDisplayMode()
+        .navigationTitleInlineMode()
     }
 }
 

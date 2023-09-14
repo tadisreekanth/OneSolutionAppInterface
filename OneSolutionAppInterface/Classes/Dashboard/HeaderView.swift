@@ -6,33 +6,51 @@
 //
 
 import SwiftUI
+import OneSolutionUtility
 
 @available(iOS 13.0.0, *)
 struct HeaderView: View {
-    var back: headerTuple?
-    var home: headerTuple?
-    var logout: headerTuple?
-    var complete: headerTuple?
-    var signature: headerTuple?
+    var back: HeaderTuple?
+    var home: HeaderTuple?
+    var logout: HeaderTuple?
+    var complete: HeaderTuple?
+    var signature: HeaderTuple?
     var title: String
         
     var body: some View {
         ZStack {
             HStack {
                 if back?.0 ?? false {
-                    HeaderButton(handler: back?.handler, imageName: icon_back)
+                    HeaderButton(
+                        handler: back?.handler,
+                        imageName: iconBack
+                    )
                     Spacer()
                 }
                 if home?.0 ?? false {
-                    HeaderButton(handler: home?.handler, imageName: (complete?.0 ?? false) ? icon_save : icon_home, title: (complete?.0 ?? false) ? "Save" : "")
+                    HeaderButton(
+                        handler: home?.handler,
+                        imageName: (complete?.0 ?? false) ? iconSave : iconHome,
+                        title: (complete?.0 ?? false) ? "Save" : ""
+                    )
                 } else if logout?.0 ?? false {
                     Spacer()
-                    HeaderButton(handler: logout?.handler, imageName: icon_logout)
+                    HeaderButton(
+                        handler: logout?.handler,
+                        imageName: iconLogout
+                    )
                 } else if complete?.0 ?? false {
-                    HeaderButton(handler: complete?.handler, imageName: icon_save, title: "Complete")
+                    HeaderButton(
+                        handler: complete?.handler,
+                        imageName: iconSave,
+                        title: "Complete"
+                    )
                 }
                 if signature?.0 ?? false {
-                    HeaderButton(handler: signature?.handler, imageName: icon_sign, title: "Signature")
+                    HeaderButton(
+                        handler: signature?.handler,
+                        imageName: iconSignature,
+                        title: "Signature")
                 }
             }
             Text(title)
@@ -42,34 +60,46 @@ struct HeaderView: View {
             Spacer()
         }
         .frame(height: 44, alignment: .leading)
-        .padding(EdgeInsets.init(top: 0, leading: 10, bottom: 0, trailing: 10))
+        .padding(.horizontal, 10)
         .background(Color.app_separator2)
     }
+}
+
+extension HeaderView {
+    private var iconBack: String { AssetIcon.back_28.rawValue }
     
-    struct HeaderButton: View {
-        var handler: noParamsHandler?
-        var imageName: String
-        var title: String?
-        var body: some View {
-            Button {
-                handler?()
-            } label: {
-                if let title = title, !title.isEmpty {
-                    VStack {
-                        Image(imageName)
-                            .resizable()
-                            .frame(width: 32, height: 32)
-                        Text(title)
-                            .foregroundColor(.black)
-                            .font(.system(size: 12))
-                            .padding(.top, -10)
-                    }
-                    .basicHeight()
-                } else {
+    private var iconSignature: String { AssetIcon.sign.rawValue }
+    
+    private var iconLogout: String { AssetIcon.logout.rawValue }
+    
+    private var iconHome: String { AssetIcon.home.rawValue }
+    
+    private var iconSave: String { AssetIcon.save.rawValue }
+}
+
+struct HeaderButton: View {
+    var handler: EmptyParamsHandler?
+    var imageName: String
+    var title: String?
+    var body: some View {
+        Button {
+            handler?()
+        } label: {
+            if let title = title, !title.isEmpty {
+                VStack {
                     Image(imageName)
                         .resizable()
                         .frame(width: 32, height: 32)
+                    Text(title)
+                        .foregroundColor(.black)
+                        .font(.system(size: 12))
+                        .padding(.top, -10)
                 }
+                .basicHeight()
+            } else {
+                Image(imageName)
+                    .resizable()
+                    .frame(width: 32, height: 32)
             }
         }
     }
