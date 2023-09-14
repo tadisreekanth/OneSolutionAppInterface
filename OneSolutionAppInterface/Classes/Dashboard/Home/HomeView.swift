@@ -7,14 +7,20 @@
 
 import SwiftUI
 import UIKit
+import OneSolutionAPI
+import OneSolutionUtility
 
-struct HomeView: View {
-    @EnvironmentObject var user: UserBean
+public struct HomeView: View {
+    @EnvironmentObject public var user: UserBean
     @State var graphData: GraphData?
     var userRoles: [UserRole]?
     @State private var navigateToNextView: String? = ""
     
-    var body: some View {
+    public init(userRoles: [UserRole]? = nil) {
+        self.userRoles = userRoles
+    }
+    
+    public var body: some View {
         NavigationView {
             OneSolutionBaseView {
                 VStack {
@@ -36,9 +42,9 @@ struct HomeView: View {
                 }
             }
         }
-        .onAppear(perform: {
+        .onAppear {
             self.fetchGraphData()
-        })
+        }
     }
     
     private func list(with userRoles: [UserRole]) -> some View {
@@ -47,7 +53,8 @@ struct HomeView: View {
             NavigationLink(tag: role.role?.rawValue ?? "", selection: $navigateToNextView) {
                 switch roleName {
                 case .process_workorder:
-                    ProcessWorkOrderView(showSelf: $navigateToNextView)
+                    EmptyView()
+//                    ProcessWorkOrderView(showSelf: $navigateToNextView)
                 default:
                     EmptyView()
                 }
@@ -63,7 +70,7 @@ struct HomeView: View {
     private func fetchGraphData() {
         if user.userDetails.isExternalUser == false {
             Task {
-                switch await HomeAPI.shared.fetchGraphData() {
+                switch await HomeAPI.instance.fetchGraphData() {
                 case .success(let data):
                     self.graphData = data
                 case .failure(_):

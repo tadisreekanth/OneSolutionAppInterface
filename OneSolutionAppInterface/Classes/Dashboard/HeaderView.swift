@@ -66,20 +66,20 @@ struct HeaderView: View {
 }
 
 extension HeaderView {
-    private var iconBack: String { AssetIcon.back_28.rawValue }
+    private var iconBack: Image { AssetIcon.back_28.image() }
     
-    private var iconSignature: String { AssetIcon.sign.rawValue }
+    private var iconSignature: Image { AssetIcon.sign.image() }
     
-    private var iconLogout: String { AssetIcon.logout.rawValue }
+    private var iconLogout: Image { AssetIcon.logout.image() }
     
-    private var iconHome: String { AssetIcon.home.rawValue }
+    private var iconHome: Image { AssetIcon.home.image() }
     
-    private var iconSave: String { AssetIcon.save.rawValue }
+    private var iconSave: Image { AssetIcon.save.image() }
 }
 
 struct HeaderButton: View {
     var handler: EmptyParamsHandler?
-    var imageName: String
+    var imageName: Image
     var title: String?
     var body: some View {
         Button {
@@ -87,7 +87,7 @@ struct HeaderButton: View {
         } label: {
             if let title = title, !title.isEmpty {
                 VStack {
-                    Image(imageName)
+                    imageName
                         .resizable()
                         .frame(width: 32, height: 32)
                     Text(title)
@@ -97,7 +97,7 @@ struct HeaderButton: View {
                 }
                 .basicHeight()
             } else {
-                Image(imageName)
+                imageName
                     .resizable()
                     .frame(width: 32, height: 32)
             }

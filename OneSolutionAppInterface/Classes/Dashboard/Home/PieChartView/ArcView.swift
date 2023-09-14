@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OneSolutionAPI
 
 struct Arc: Shape {
     var arcData: ArcData
@@ -22,9 +23,14 @@ struct Arc: Shape {
 
 struct Arc_preview: PreviewProvider {
     static var previews: some View {
-        let chartValues = OneSolutionPieChartView.doubleValues(with: GraphData(fHold: 7711, fOpenCount: 15973, fClosedCount: 7711))
+        
+        let chartValues = OneSolutionPieChartView.doubleValues(with: GraphData.staticValues)
+        
         let arcData = ArcDataManager.createArcData(with: chartValues.0)
-        Arc(arcData: arcData[2])
-            .pathColor(.orange, 70)
+        
+        Arc(
+            arcData: arcData[2]
+        )
+        .pathColor(.orange, 70)
     }
 }

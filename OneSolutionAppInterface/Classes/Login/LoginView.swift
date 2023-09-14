@@ -11,15 +11,32 @@ import OneSolutionAPI
 import OneSolutionTextField
 
 @available (iOS 13.0.0, *)
-struct LoginView: View {
-    @State var userName: String = ""
-    @State var password: String = ""
-    
-    @EnvironmentObject var user: UserBean
-    
-    @State private var showURLSettingsView = false
+public struct LoginView: View {
+//    @State var userName: String = ""
+//    @State var password: String = ""
+    @EnvironmentObject public var user: UserBean
+    @State private var showingURLSettingsView = false
 
-    var body: some View {
+    var userNameTextFieldViewModel: OneSolutionTextFieldViewModel
+    var passwordTextFieldViewModel: OneSolutionTextFieldViewModel
+
+    public init() {
+        let credentials = APIClient.shared?.appConstants?.defaultCredentials
+        userNameTextFieldViewModel = OneSolutionTextFieldViewModel(
+            input: credentials?.userName ?? "",
+            placeholder: "Enter User ID",
+            showClear: true,
+            callAPIWhenTextChanged: false
+        )
+        passwordTextFieldViewModel = OneSolutionTextFieldViewModel(
+            input: credentials?.password ?? "",
+            placeholder: "Enter Password",
+            showClear: true,
+            callAPIWhenTextChanged: false
+        )
+    }
+
+    public var body: some View {
         NavigationView {
             OneSolutionBaseView {
                 VStack {
@@ -30,28 +47,21 @@ struct LoginView: View {
                 }
             }
         }
-        .onAppear {
-//            if isSimulator {
-//                if Base == localBase {
-//                    userName = "KLS"
-//                    password = "KLS"
-//                } else {
-//                    userName = "KLSIT"
-//                    password = "KLSINFYZ"
-//                }
-//            }
-        }
     }
 }
 
 //MARK: - UI
 
-extension LoginView {
+public extension LoginView {
     var loginView: some View {
         VStack {
-            OneSolutionTextField(input: $userName, showClear: true, callAPIWhenTextChanged: false, placeholder: "Enter User ID")
+            OneSolutionTextField(
+                viewModel: userNameTextFieldViewModel
+            )
             Spacer().frame(height: 15)
-            OneSolutionTextField(input: $password, showClear: true, callAPIWhenTextChanged: false, placeholder: "Enter Password")
+            OneSolutionTextField(
+                viewModel: passwordTextFieldViewModel
+            )
             Spacer().frame(height: 20)
             Text("SIGN IN")
                 .foregroundColor(Color.app_white)
@@ -71,7 +81,7 @@ extension LoginView {
         .padding(.leading, 30)
         .padding(.trailing, 30)
     }
-    
+
     var footerView: some View {
         ZStack {
             HStack {
@@ -82,8 +92,8 @@ extension LoginView {
                 Spacer().frame(width: 5)
             }
             VStack {
-                NavigationLink(isActive: $showURLSettingsView) {
-                    URLSettingsView(showSelf: $showURLSettingsView)
+                NavigationLink(isActive: $showingURLSettingsView) {
+                    URLSettingsView(showSelf: $showingURLSettingsView)
                 } label: {
                     Text("update service url".uppercased())
                         .foregroundColor(.app_black)
@@ -96,31 +106,27 @@ extension LoginView {
     }
 }
 
-//MARK: - update
-
-extension LoginView {
+//MARK: - Helper
+public extension LoginView {
+    private var appConstants: AppConstants? {
+        APIClient.shared?.appConstants
+    }
     private func appVersionText() -> String {
-        var appPointedTo = "Loc"
-        if kAppBundleIdentifier == kBundleIdentifier_UAT {
-            appPointedTo = "Uat"
-        } else if kAppBundleIdentifier == kBundleIdentifier_EPC_UAT {
-            appPointedTo = "Epc_Uat"
-        } else if kAppBundleIdentifier == kBundleIdentifier_Production {
-            appPointedTo = "Pro"
-        }
-        return "V \(appPointedTo) - \(kAppVersion) (\(kAppBuild))"
+        let appEnvironment = appConstants?.appEnvironmentText ?? ""
+        let appVersion = appConstants?.appVersion ?? ""
+        let appBuild = appConstants?.buildVersion ?? ""
+
+        return "V \(appEnvironment) - \(appVersion) (\(appBuild))"
     }
 }
 
 //MARK: - Action
-
-extension LoginView {
-    
+public extension LoginView {
     private func handleLoginAction() {
         Task {
             ProgressPresenter.shared.showProgress()
-            let result = await LoginAPI.shared.loginWith(userName: userName,
-                                                    password: password)
+            let result = await LoginAPI.instance.loginWith(userName: userNameTextFieldViewModel.userInput,
+                                                           password: passwordTextFieldViewModel.userInput)
             ProgressPresenter.shared.hideProgress()
             switch result {
             case .success(let login):

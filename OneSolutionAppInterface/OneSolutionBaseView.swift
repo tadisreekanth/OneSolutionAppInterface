@@ -8,12 +8,12 @@
 import SwiftUI
 import OneSolutionUtility
 
-struct OneSolutionBaseView<Content: View>: View {
+public struct OneSolutionBaseView<Content: View>: View {
     let content: Content
-    init(@ViewBuilder content: () -> Content) {
+    public init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
-    var body: some View {
+    public var body: some View {
         // Fallback on earlier versions
         ZStack {
             VStack {
@@ -29,9 +29,9 @@ struct OneSolutionBaseView<Content: View>: View {
     }
 }
 
-extension OneSolutionBaseView {
+public extension OneSolutionBaseView {
     var image: some View {
-        Image("bg_image")
+        AssetImage.bgimage.image()
             .resizable()
             .opacity(0.5)
     }

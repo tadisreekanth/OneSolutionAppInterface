@@ -6,17 +6,24 @@
 //
 
 import SwiftUI
+import OneSolutionUtility
+import OneSolutionAPI
 
 struct OneSolutionPieChartRows: View {
     var colors: [Color]
     var names: [String]
     var values: [Double]
+    
     var body: some View {
         HStack {
             ///for id we need to pass unique value
             ///double also a struct, no problem if we pass .self as id in ForEach
             ForEach(0..<values.count, id: \.self) { i in
-                PieChartViewRow(color: colors[i], name: names[i], value: values[i])
+                PieChartViewRow(
+                    color: colors[i],
+                    name: names[i],
+                    value: values[i]
+                )
             }
         }
     }
@@ -26,6 +33,7 @@ struct PieChartViewRow: View {
     var color: Color
     var name: String
     var value: Double
+    
     var body: some View {
         HStack {
             Rectangle()
@@ -39,12 +47,11 @@ struct PieChartViewRow: View {
     }
 }
 
-
 struct OneSolutionPieChartRowsPreviews: PreviewProvider {
     static var previews: some View {
-        let doubleValues = OneSolutionPieChartView.doubleValues(with: GraphData(fHold: 7711, fOpenCount: 159737, fClosedCount: 7711))
-        let doubleValues1 = OneSolutionPieChartView.doubleValues(with: GraphData(fOpenCount: 159737, fClosedCount: 7711))
-        let doubleValues2 = OneSolutionPieChartView.doubleValues(with: GraphData(fClosedCount: 7711))
+        let doubleValues = OneSolutionPieChartView.doubleValues(with: GraphData.staticValues)
+        let doubleValues1 = OneSolutionPieChartView.doubleValues(with: GraphData.staticValues1)
+        let doubleValues2 = OneSolutionPieChartView.doubleValues(with: GraphData.staticValues2)
         VStack {
             OneSolutionPieChartRows(colors: doubleValues.2, names: doubleValues.1, values: doubleValues.0)
                 .frame(height: 40)

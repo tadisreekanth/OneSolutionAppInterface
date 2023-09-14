@@ -6,19 +6,29 @@
 //
 
 import SwiftUI
+import OneSolutionAPI
 
 struct OneSolutionPieChartView: View {
     var graphData: GraphData?
+    
     var body: some View {
         let chartValues = OneSolutionPieChartView.doubleValues(with: self.graphData)
         GeometryReader { geometry in
             VStack {
-                PieChartView(arcDataValues:
-                                ArcDataManager.createArcData(with: chartValues.0), colors: chartValues.2)
+                //pie chart
+                PieChartView(
+                    arcDataValues: ArcDataManager.createArcData(with: chartValues.0),
+                    colors: chartValues.2
+                )
+                
                 Spacer().frame(height: 20)
-                OneSolutionPieChartRows(colors: chartValues.2,
-                                        names: chartValues.1,
-                                        values: chartValues.0)
+                
+                //piechart details
+                OneSolutionPieChartRows(
+                    colors: chartValues.2,
+                    names: chartValues.1,
+                    values: chartValues.0
+                )
                 .frame(height: 40, alignment: .center)
             }
             .frame(width: geometry.size.width,
