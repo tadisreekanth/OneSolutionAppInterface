@@ -14,7 +14,6 @@ public struct OneSolutionBaseView<Content: View>: View {
         self.content = content()
     }
     public var body: some View {
-        // Fallback on earlier versions
         ZStack {
             VStack {
                 content
@@ -31,7 +30,7 @@ public struct OneSolutionBaseView<Content: View>: View {
 
 public extension OneSolutionBaseView {
     var image: some View {
-        AssetImage.bgimage.image()
+        AssetImage.bgimage.image
             .resizable()
             .opacity(0.5)
     }

@@ -35,11 +35,11 @@ struct PieChartViewRow: View {
     var value: Double
     
     var body: some View {
-        HStack {
+        HStack(spacing: 5) {
             Rectangle()
                 .fill(color)
                 .frame(width: 10, height: 10)
-            Spacer().frame(width: 5)
+                        
             Text("\(name) \(value.stringValue)")
                 .bold()
                 .font(.system(size: appFont12))

@@ -66,15 +66,15 @@ struct HeaderView: View {
 }
 
 extension HeaderView {
-    private var iconBack: Image { AssetIcon.back_28.image() }
+    private var iconBack: Image { AssetIcon.back_28.image }
     
-    private var iconSignature: Image { AssetIcon.sign.image() }
+    private var iconSignature: Image { AssetIcon.sign.image }
     
-    private var iconLogout: Image { AssetIcon.logout.image() }
+    private var iconLogout: Image { AssetIcon.logout.image }
     
-    private var iconHome: Image { AssetIcon.home.image() }
+    private var iconHome: Image { AssetIcon.home.image }
     
-    private var iconSave: Image { AssetIcon.save.image() }
+    private var iconSave: Image { AssetIcon.save.image }
 }
 
 struct HeaderButton: View {

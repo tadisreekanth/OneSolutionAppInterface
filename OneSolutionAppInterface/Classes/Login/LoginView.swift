@@ -54,19 +54,21 @@ public struct LoginView: View {
 
 public extension LoginView {
     var loginView: some View {
-        VStack {
+        VStack(spacing: 12) {
             OneSolutionTextField(
                 viewModel: userNameTextFieldViewModel
             )
-            Spacer().frame(height: 15)
+            
             OneSolutionTextField(
                 viewModel: passwordTextFieldViewModel
             )
-            Spacer().frame(height: 20)
+            .padding(.bottom, 3)
+            
             Text("SIGN IN")
                 .foregroundColor(Color.app_white)
                 .font(.system(size: buttonFont))
-                .padding(EdgeInsets(top: 8, leading: 14, bottom: 7, trailing: 14))
+                .padding(.horizontal, 14) // EdgeInsets(top: 8, leading: 14, bottom: 7, trailing: 14))
+                .padding(.vertical, 7)
                 .background(Color.app_blue)
                 .cornerRadius(buttonCornerRadius)
                 .onTapGesture {
@@ -88,8 +90,8 @@ public extension LoginView {
                 Spacer()
                 Text(self.appVersionText())
                     .foregroundColor(.app_white)
-                    .font(.system(size: appFont10))
-                Spacer().frame(width: 5)
+                    .font(.system(size: appFont11))
+                    .padding(.trailing, 5)
             }
             VStack {
                 NavigationLink(isActive: $showingURLSettingsView) {
@@ -99,7 +101,6 @@ public extension LoginView {
                         .foregroundColor(.app_black)
                         .bold()
                         .font(.system(size: appFont12))
-                        .alignmentGuide(VerticalAlignment.center) { _ in 0 }
                 }
             }
         }

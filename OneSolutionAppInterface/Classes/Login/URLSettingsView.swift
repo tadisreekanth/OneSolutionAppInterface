@@ -31,7 +31,7 @@ struct URLSettingsView: View {
         OneSolutionBaseView {
             VStack {
                 Spacer()
-                VStack {
+                VStack(spacing: 20) {
                     VStack (alignment: .leading) {
                         Text("Service URL")
                             .padding(.bottom, -1)
@@ -40,8 +40,8 @@ struct URLSettingsView: View {
                             viewModel: urlTextFieldViewModel
                         )
                     }
-                    Spacer().frame(height: 20)
-                    HStack {
+                                        
+                    HStack(spacing: buttonsSpacing) {
                         Spacer()
                         Text("SAVE")
                             .foregroundColor(Color.app_white)
@@ -52,8 +52,7 @@ struct URLSettingsView: View {
                             .onTapGesture {
                                 self.saveURL()
                             }
-                        Spacer()
-                            .frame(width: buttonsSpacing)
+                                                
                         Text("RESET")
                             .foregroundColor(Color.app_white)
                             .font(.system(size: buttonFont))
@@ -81,9 +80,7 @@ struct URLSettingsView: View {
 extension URLSettingsView {
     func saveURL () {
         let kUserDefaults = UserDefaults.standard
-        if url.isEmpty {
-            
-        } else {
+        if !url.isEmpty {
             kUserDefaults.setValue(url, forKey: keySavedBaseURL)
             kUserDefaults.synchronize()
             

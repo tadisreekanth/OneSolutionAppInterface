@@ -14,15 +14,13 @@ struct OneSolutionPieChartView: View {
     var body: some View {
         let chartValues = OneSolutionPieChartView.doubleValues(with: self.graphData)
         GeometryReader { geometry in
-            VStack {
+            VStack(spacing: 20) {
                 //pie chart
                 PieChartView(
                     arcDataValues: ArcDataManager.createArcData(with: chartValues.0),
                     colors: chartValues.2
                 )
-                
-                Spacer().frame(height: 20)
-                
+                                
                 //piechart details
                 OneSolutionPieChartRows(
                     colors: chartValues.2,
