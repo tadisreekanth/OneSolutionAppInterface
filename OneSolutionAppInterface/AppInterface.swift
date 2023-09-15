@@ -10,17 +10,23 @@ import OneSolutionUtility
 import OneSolutionAPI
 
 public struct AppInterface: View {
-    @EnvironmentObject public var user: UserBean
+    @ObservedObject var user = UserData.shared.user
+    @ObservedObject var toastPresenter = ToastPresenter.shared
+    @ObservedObject var progressPresenter = ProgressPresenter.shared
 
     public init () { }
     
     public var body: some View {
         if let userId = user.userID, userId > 0 {
             HomeView(userRoles: user.userDetails.userRoles)
-                .environmentObject(user)
                 .background(Color.clear)
+                .toast(presented: $toastPresenter.isPresented, text: toastPresenter.text ?? "")
+                .progress(progressCount: $progressPresenter.progressCount, text: progressPresenter.text ?? "")
+                .environmentObject(user)
         } else {
             LoginView()
+                .toast(presented: $toastPresenter.isPresented, text: toastPresenter.text ?? "")
+                .progress(progressCount: $progressPresenter.progressCount, text: progressPresenter.text ?? "")
                 .environmentObject(user)
         }
     }
