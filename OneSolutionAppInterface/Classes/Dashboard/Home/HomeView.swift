@@ -30,7 +30,7 @@ public struct HomeView: View {
                     List {
                         if let data = graphData {
                             OneSolutionPieChartView(graphData: data)
-                                .frame(height: 310)
+                                .frame(height: 330)
                                 .listRowBackground(Color.clear)
                         }
                         if let roles = userRoles {
@@ -54,7 +54,11 @@ public struct HomeView: View {
                 switch roleName {
                 case .process_workorder:
                     EmptyView()
-//                    ProcessWorkOrderView(showSelf: $navigateToNextView)
+                    if #available(iOS 14.0, *) {
+                        ProcessWorkOrderView(showSelf: $navigateToNextView)
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 default:
                     EmptyView()
                 }

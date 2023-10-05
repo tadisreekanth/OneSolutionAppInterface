@@ -12,7 +12,7 @@ import OneSolutionTextField
 
 @available(iOS 13.0.0, *)
 struct URLSettingsView: View {
-    var url: String
+    private var url: String
     @Binding var showSelf: Bool
     
     var urlTextFieldViewModel: OneSolutionTextFieldViewModel
@@ -80,8 +80,9 @@ struct URLSettingsView: View {
 extension URLSettingsView {
     func saveURL () {
         let kUserDefaults = UserDefaults.standard
-        if !url.isEmpty {
-            kUserDefaults.setValue(url, forKey: keySavedBaseURL)
+        let userInput = self.urlTextFieldViewModel.userInput
+        if !userInput.isEmpty {
+            kUserDefaults.setValue(userInput, forKey: keySavedBaseURL)
             kUserDefaults.synchronize()
             
             APIClient.shared?.route?.hostUpdated()
