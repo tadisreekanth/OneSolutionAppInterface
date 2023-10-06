@@ -21,25 +21,23 @@ public struct HomeView: View {
     }
     
     public var body: some View {
-        NavigationView {
-            OneSolutionBaseView {
-                VStack {
-                    HeaderView(logout: (true, {
-                        user.remove()
-                    }), title: "Home")
-                    List {
-                        if let data = graphData {
-                            OneSolutionPieChartView(graphData: data)
-                                .frame(height: 330)
-                                .listRowBackground(Color.clear)
-                        }
-                        if let roles = userRoles {
-                            list(with: roles)
-                        }
+        OneSolutionBaseView {
+            VStack {
+                HeaderView(logout: (true, {
+                    user.remove()
+                }), title: "Home")
+                List {
+                    if let data = graphData {
+                        OneSolutionPieChartView(graphData: data)
+                            .frame(height: 330)
+                            .listRowBackground(Color.clear)
                     }
-                    .hideRowSeparator()
-                    .listRowBackground(Color.clear)
+                    if let roles = userRoles {
+                        list(with: roles)
+                    }
                 }
+                .hideRowSeparator()
+                .listRowBackground(Color.clear)
             }
         }
         .onAppear {
@@ -59,6 +57,10 @@ public struct HomeView: View {
                     } else {
                         // Fallback on earlier versions
                     }
+                case .inventory_audit:
+                    InventoryAuditView(
+                        $navigateToNextView
+                    )
                 default:
                     EmptyView()
                 }

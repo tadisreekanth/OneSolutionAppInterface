@@ -40,7 +40,7 @@ struct URLSettingsView: View {
                             viewModel: urlTextFieldViewModel
                         )
                     }
-                                        
+                    
                     HStack(spacing: buttonsSpacing) {
                         Spacer()
                         Text("SAVE")
@@ -52,7 +52,7 @@ struct URLSettingsView: View {
                             .onTapGesture {
                                 self.saveURL()
                             }
-                                                
+                        
                         Text("RESET")
                             .foregroundColor(Color.app_white)
                             .font(.system(size: buttonFont))
@@ -94,10 +94,8 @@ extension URLSettingsView {
 
 struct URLSettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            URLSettingsView(
-                showSelf: Binding.constant(true)
-            )
-        }
+        URLSettingsView(
+            showSelf: Binding.constant(true)
+        )
     }
 }

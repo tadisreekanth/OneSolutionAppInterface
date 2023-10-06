@@ -14,14 +14,16 @@ public struct OneSolutionBaseView<Content: View>: View {
         self.content = content()
     }
     public var body: some View {
-        ZStack {
-            VStack {
-                content
-                Spacer()
-            }
-        }.background(
-            bgImage
-        )
+        NavigationView {
+            ZStack {
+                VStack {
+                    content
+                    Spacer()
+                }
+            }.background(
+                bgImage
+            )
+        }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .navigationTitleInlineMode()

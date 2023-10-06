@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OneSolutionUtility
 
 enum Settings : String {
     case vibrate = "vibrationScan"
@@ -33,27 +34,34 @@ enum Settings : String {
 
 
 struct SettingsView: View {
-    @Binding var showSelf: String?
+    @Binding var showSelf: Bool
     var arrSettings = [Settings]()
     
-    init(showSelf: Binding<String?>) {
-        self._showSelf = showSelf
+    init(_ showSettings: Binding<Bool>) {
+        self._showSelf = showSettings
         arrSettings = [.sound, .vibrate]
     }
     
     var body: some View {
         OneSolutionBaseView {
             HeaderView(back: (true, {
-                self.showSelf = ""
+                self.showSelf.toggle()
             }), home: (true, {
-                self.showSelf = ""
-            }), title: "Process WorkOrder")
+                self.showSelf.toggle()
+            }), title: "Settings")
                         
-            List(arrSettings, id: \.rawValue) { setting in
-                if #available(iOS 14.0, *) {
-                    SettingsTypeView(type: setting)
+            VStack(spacing: 8) {
+                Spacer().frame(height: 25)
+                ForEach(arrSettings, id: \.rawValue) { setting in
+                    if #available(iOS 14.0, *) {
+                        SettingsTypeView(type: setting)
+                            .basicHeight()
+                            .background(Color.app_white)
+                            .cornerRadius(subViewCornerRadius)
+                    }
                 }
             }
+            .padding(.horizontal, 10)
         }
     }
 }
@@ -89,7 +97,7 @@ struct SettingsTypeView: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView(
-            showSelf: Binding.constant("SettingsView")
+            Binding.constant(false)
         )
     }
 }

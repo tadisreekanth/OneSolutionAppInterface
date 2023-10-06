@@ -87,8 +87,9 @@ struct ProcessWorkOrderView: View {
                     .padding(.trailing, 10)
             }
             Spacer()
+            
             ///FOOTER
-            //            footerView
+            footerView
         }
         .onAppear {
             updateTextFieldsValues()

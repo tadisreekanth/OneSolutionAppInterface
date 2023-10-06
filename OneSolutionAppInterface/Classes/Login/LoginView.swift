@@ -12,14 +12,14 @@ import OneSolutionTextField
 
 @available (iOS 13.0.0, *)
 public struct LoginView: View {
-//    @State var userName: String = ""
-//    @State var password: String = ""
+    //    @State var userName: String = ""
+    //    @State var password: String = ""
     @EnvironmentObject public var user: UserBean
     @State private var showingURLSettingsView = false
-
+    
     var userNameTextFieldViewModel: OneSolutionTextFieldViewModel
     var passwordTextFieldViewModel: OneSolutionTextFieldViewModel
-
+    
     public init() {
         let credentials = APIClient.shared?.appConstants?.defaultCredentials
         userNameTextFieldViewModel = OneSolutionTextFieldViewModel(
@@ -35,16 +35,14 @@ public struct LoginView: View {
             callAPIWhenTextChanged: false
         )
     }
-
+    
     public var body: some View {
-        NavigationView {
-            OneSolutionBaseView {
-                VStack {
-                    Spacer()
-                    loginView
-                    Spacer()
-                    footerView
-                }
+        OneSolutionBaseView {
+            VStack {
+                Spacer()
+                loginView
+                Spacer()
+                footerView
             }
         }
     }
@@ -83,7 +81,7 @@ public extension LoginView {
         .padding(.leading, 30)
         .padding(.trailing, 30)
     }
-
+    
     var footerView: some View {
         ZStack {
             HStack {
@@ -116,7 +114,7 @@ public extension LoginView {
         let appEnvironment = appConstants?.appEnvironmentText ?? ""
         let appVersion = appConstants?.appVersion ?? ""
         let appBuild = appConstants?.buildVersion ?? ""
-
+        
         return "V \(appEnvironment) - \(appVersion) (\(appBuild))"
     }
 }
