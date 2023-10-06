@@ -16,7 +16,9 @@ struct ProcessWorkOrderView: View {
     
     var tfReferenceViewModel: OneSolutionTextFieldViewModel
     var tfSerialViewModel: OneSolutionTextFieldViewModel
+    var tfSiteViewModel: OneSolutionTextFieldViewModel
     var tfServiceGroupViewModel: OneSolutionTextFieldViewModel
+    var tfMethodOutViewModel: OneSolutionTextFieldViewModel
     var tfEstDateViewModel: OneSolutionTextFieldViewModel
     
     @State var collectionPagesCount: Int = 0
@@ -30,6 +32,7 @@ struct ProcessWorkOrderView: View {
         self._showSelf = showSelf
         
         self.tfReferenceViewModel = OneSolutionTextFieldViewModel(input: "",
+                                                                  placeholder: "Please select reference",
                                                                   showRightView: true,
                                                                   rightIcon: .down_arrow,
                                                                   showClear: true)
@@ -41,12 +44,26 @@ struct ProcessWorkOrderView: View {
                                                                 showClear: true,
                                                                 objectType: Serial.self)
         
+        self.tfSiteViewModel = OneSolutionTextFieldViewModel(input: "",
+                                                             placeholder: "Touch here to type",
+                                                             showRightView: true,
+                                                             rightIcon: .down_arrow,
+                                                             showClear: true)
+        
         self.tfServiceGroupViewModel = OneSolutionTextFieldViewModel(input: "",
+                                                                     placeholder: "Touch here to type",
                                                                      showRightView: true,
                                                                      rightIcon: .down_arrow,
                                                                      showClear: true)
         
+        self.tfMethodOutViewModel = OneSolutionTextFieldViewModel(input: "",
+                                                                  placeholder: "Touch here to type",
+                                                                  showRightView: true,
+                                                                  rightIcon: .down_arrow,
+                                                                  showClear: true)
+        
         self.tfEstDateViewModel = OneSolutionTextFieldViewModel(input: "",
+                                                                placeholder: "Please select Date",
                                                                 showRightView: true,
                                                                 rightIcon: .calender,
                                                                 showClear: true)
@@ -93,14 +110,26 @@ extension ProcessWorkOrderView {
                     OneSolutionTextField(
                         viewModel: tfReferenceViewModel
                     )
+                    OneSolutionTextField(
+                        viewModel: tfSerialViewModel
+                    )
                 }
-                OneSolutionTextField(
-                    viewModel: tfSerialViewModel
-                )
+                HStack {
+                    Text("Site")
+                    OneSolutionTextField(
+                        viewModel: tfSiteViewModel
+                    )
+                }
                 HStack {
                     Text("Service Group")
                     OneSolutionTextField(
                         viewModel: tfServiceGroupViewModel
+                    )
+                }
+                HStack {
+                    Text("Method Out")
+                    OneSolutionTextField(
+                        viewModel: tfMethodOutViewModel
                     )
                 }
                 HStack {
@@ -165,13 +194,10 @@ extension ProcessWorkOrderView {
     var footerView: some View {
         HStack (spacing: 5) {
             AssetIcon.left_arrow.image
-                .resizable()
                 .frame(maxWidth: 22, maxHeight: 22, alignment: .leading)
                 .onTapGesture {
                     
                 }
-            
-            //            Spacer().frame(width: 5)
             
             ScrollView(.horizontal, showsIndicators: true) {
                 LazyHStack {
@@ -186,10 +212,7 @@ extension ProcessWorkOrderView {
             }
             .basicHeight()
             
-            //            Spacer().frame(width: 5)
-            
             AssetIcon.right_arrow_green.image
-                .resizable()
                 .frame(maxWidth: 22, maxHeight: 22, alignment: .trailing)
                 .onTapGesture {
                     
@@ -202,7 +225,7 @@ extension ProcessWorkOrderView {
                                     workOrder: WorkOrder) -> String {
         let serial = (item.serialNum ?? "")
         let service = item.serviceStatus ?? ""
-
+        
         let dealer = "Dealer - \(item.dealerName ?? "")"
         
         var textArray: [String] = [
@@ -227,24 +250,24 @@ extension ProcessWorkOrderView {
         if !(item.putBackSerialNumber ?? "").isEmpty {
             textArray.append("Put Back SN# - \(item.putBackSerialNumber ?? "")")
         }
-
+        
         if workOrder.checkListFlag == false {
             let estimatedTimeText = "Estimated time : " + (item.workOrderTime?.tpaTime ?? "")
             let actualTimeText = "Actual time : " + (item.workOrderTime?.actualTime ?? "")
-
+            
             var timerText = dealer
             timerText = timerText + "\n" + estimatedTimeText
             timerText = timerText + "\n" + actualTimeText
-
+            
             let defaultColor: UIColor = .gray
             let timeColor = item.workOrderTime?.timeColor
             let color = timeColor == .black ? defaultColor : (timeColor ?? .black)
-
+            
             let attStr = NSMutableAttributedString.attributetitleFor(title: timerText,
-                                                        rangeStrings: [timerText, actualTimeText],
-                                                        colors: [defaultColor, color],
-                                                        fonts: [UIFont.systemFont(ofSize: 14), UIFont.systemFont(ofSize: 14)],
-                                                        alignmentCenter: false)
+                                                                     rangeStrings: [timerText, actualTimeText],
+                                                                     colors: [defaultColor, color],
+                                                                     fonts: [UIFont.systemFont(ofSize: 14), UIFont.systemFont(ofSize: 14)],
+                                                                     alignmentCenter: false)
             if let index = textArray.firstIndex(of: dealer) {
                 textArray[index] = attStr.string
             }
@@ -264,21 +287,21 @@ extension ProcessWorkOrderView {
     }
     
     func updateTextFieldsValues() {
-//
-//        tfReference.updateRequest(request: OneSolutionRequest(url_String: ServiceAPI.shared.URL_LoadOut_Reference, requestParams: serviceGroupParams, searchValueKey: ""))
-//        tfSerial.updateRequest(request: OneSolutionRequest(url_String: ServiceAPI.shared.URL_LoadOut_Reference, requestParams: serviceGroupParams, searchValueKey: ""))
-//        tfServiceGroup.updateRequest(request: OneSolutionRequest(url_String: ServiceAPI.shared.URL_LoadOut_Reference, requestParams: serviceGroupParams, searchValueKey: ""))
-//        tfEstDate.updateRequest(request: OneSolutionRequest(url_String: ServiceAPI.shared.URL_LoadOut_Reference, requestParams: serviceGroupParams, searchValueKey: ""))
-//
-//        tfReference.onTextChange = {
-//
-//        }
-//        tfReference.onAPIResponse = { response in
-//
-//        }
-//        tfReference.onSelected = { selected in
-//
-//        }
+        //
+        //        tfReference.updateRequest(request: OneSolutionRequest(url_String: ServiceAPI.shared.URL_LoadOut_Reference, requestParams: serviceGroupParams, searchValueKey: ""))
+        //        tfSerial.updateRequest(request: OneSolutionRequest(url_String: ServiceAPI.shared.URL_LoadOut_Reference, requestParams: serviceGroupParams, searchValueKey: ""))
+        //        tfServiceGroup.updateRequest(request: OneSolutionRequest(url_String: ServiceAPI.shared.URL_LoadOut_Reference, requestParams: serviceGroupParams, searchValueKey: ""))
+        //        tfEstDate.updateRequest(request: OneSolutionRequest(url_String: ServiceAPI.shared.URL_LoadOut_Reference, requestParams: serviceGroupParams, searchValueKey: ""))
+        //
+        //        tfReference.onTextChange = {
+        //
+        //        }
+        //        tfReference.onAPIResponse = { response in
+        //
+        //        }
+        //        tfReference.onSelected = { selected in
+        //
+        //        }
     }
 }
 
@@ -344,12 +367,12 @@ struct WorkOrderHeader: View {
         
         var porText = ""
         if let storage = workorder.storageName,
-            !storage.isEmpty {
+           !storage.isEmpty {
             porText = "POR# - " + storage
         }else {
             porText = "POR# - " + "N/A"
         }
-                
+        
         if workorder.checkListFlag ?? false {
             
             let estimatedTimeText = "Estimated time : " + (workorder.workOrderTime?.tpaTime ?? "")
@@ -362,13 +385,13 @@ struct WorkOrderHeader: View {
             let defaultColor: UIColor = .gray
             let timeColor = workorder.workOrderTime?.timeColor
             let color = timeColor == .black ? defaultColor : (timeColor ?? .black)
-
+            
             
             let attStr = NSMutableAttributedString.attributetitleFor(title: modifiedPORText,
-                                                        rangeStrings: [modifiedPORText, actualTimeText],
-                                                        colors: [defaultColor, color],
-                                                        fonts: [UIFont.systemFont(ofSize: 14), UIFont.systemFont(ofSize: 14)],
-                                                        alignmentCenter: false)
+                                                                     rangeStrings: [modifiedPORText, actualTimeText],
+                                                                     colors: [defaultColor, color],
+                                                                     fonts: [UIFont.systemFont(ofSize: 14), UIFont.systemFont(ofSize: 14)],
+                                                                     alignmentCenter: false)
             
             if let index = textArray.firstIndex(of: porText) {
                 textArray[index] = attStr.string

@@ -88,7 +88,6 @@ struct HeaderButton: View {
             if let title = title, !title.isEmpty {
                 VStack {
                     imageName
-                        .resizable()
                         .frame(width: 32, height: 32)
                     Text(title)
                         .foregroundColor(.black)
@@ -98,7 +97,6 @@ struct HeaderButton: View {
                 .basicHeight()
             } else {
                 imageName
-                    .resizable()
                     .frame(width: 32, height: 32)
             }
         }
