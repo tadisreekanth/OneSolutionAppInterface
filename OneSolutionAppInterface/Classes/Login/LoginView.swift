@@ -17,6 +17,8 @@ public struct LoginView: View {
     @EnvironmentObject public var user: UserBean
     @State private var showingURLSettingsView = false
     
+    @State private var showProgress = false
+    
     var userNameTextFieldViewModel: OneSolutionTextFieldViewModel
     var passwordTextFieldViewModel: OneSolutionTextFieldViewModel
     
@@ -37,13 +39,14 @@ public struct LoginView: View {
     }
     
     public var body: some View {
-        OneSolutionBaseView {
+        OneSolutionBaseView() {
             VStack {
                 Spacer()
                 loginView
                 Spacer()
                 footerView
             }
+//            .loader(showProgress)
         }
     }
 }
@@ -122,11 +125,13 @@ public extension LoginView {
 //MARK: - Action
 public extension LoginView {
     private func handleLoginAction() {
+        showProgress = true
         Task {
             ProgressPresenter.shared.showProgress()
             let result = await LoginAPI.instance.loginWith(userName: userNameTextFieldViewModel.userInput,
                                                            password: passwordTextFieldViewModel.userInput)
             ProgressPresenter.shared.hideProgress()
+            showProgress = false
             switch result {
             case .success(let login):
                 //store and pass data

@@ -97,7 +97,7 @@ struct SettingsTypeView: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView(
-            Binding.constant(false)
+            Binding.constant(true)
         )
     }
 }

@@ -9,21 +9,20 @@ import SwiftUI
 import OneSolutionUtility
 
 public struct OneSolutionBaseView<Content: View>: View {
-    let content: Content
+    private let content: Content
+    
     public init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
+    
     public var body: some View {
-        NavigationView {
-            ZStack {
-                VStack {
-                    content
-                    Spacer()
-                }
-            }.background(
-                bgImage
-            )
+        VStack {
+            content
+            Spacer()
         }
+        .background(
+            bgImage
+        )
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .navigationTitleInlineMode()

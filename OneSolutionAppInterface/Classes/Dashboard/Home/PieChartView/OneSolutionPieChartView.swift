@@ -13,7 +13,7 @@ struct OneSolutionPieChartView: View {
     
     var body: some View {
         let chartValues = OneSolutionPieChartView.doubleValues(with: self.graphData)
-        GeometryReader { geometry in
+//        GeometryReader { geometry in
             VStack(spacing: 20) {
                 //pie chart
                 PieChartView(
@@ -29,9 +29,9 @@ struct OneSolutionPieChartView: View {
                 )
                 .frame(height: 40, alignment: .center)
             }
-            .frame(width: geometry.size.width,
-                   height: geometry.size.height)
-        }
+//            .frame(width: geometry.size.width,
+//                   height: geometry.size.height)
+//        }
     }
 }
 

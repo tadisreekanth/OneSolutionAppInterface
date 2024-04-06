@@ -11,7 +11,7 @@ import OneSolutionAPI
 import OneSolutionUtility
 
 public struct HomeView: View {
-    @EnvironmentObject public var user: UserBean
+    @EnvironmentObject var user: UserBean
     @State var graphData: GraphData?
     var userRoles: [UserRole]?
     @State private var navigateToNextView: String? = ""
@@ -21,24 +21,30 @@ public struct HomeView: View {
     }
     
     public var body: some View {
-        OneSolutionBaseView {
-            VStack {
-                HeaderView(logout: (true, {
-                    user.remove()
-                }), title: "Home")
-                List {
-                    if let data = graphData {
-                        OneSolutionPieChartView(graphData: data)
-                            .frame(height: 330)
-                            .listRowBackground(Color.clear)
+        NavigationView {
+            OneSolutionBaseView {
+                VStack {
+                    HeaderView(logout: (true, {
+                        user.remove()
+                    }), title: "Home")
+                    List {
+                        if let data = graphData {
+                            OneSolutionPieChartView(graphData: data)
+                                .frame(height: 330)
+                                .listRowBackground(Color.clear)
+                                .padding(.top, 15)
+                        }
+                        if let roles = userRoles {
+                            list(with: roles)
+                        }
                     }
-                    if let roles = userRoles {
-                        list(with: roles)
-                    }
+                    .hideRowSeparator()
+                    .listRowBackground(Color.clear)
                 }
-                .hideRowSeparator()
-                .listRowBackground(Color.clear)
             }
+            .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true)
+            .navigationTitleInlineMode()
         }
         .onAppear {
             self.fetchGraphData()
@@ -59,8 +65,21 @@ public struct HomeView: View {
                     }
                 case .inventory_audit:
                     InventoryAuditView(
-                        $navigateToNextView
+                        viewModel: InventoryAuditViewModel(showSelf: $navigateToNextView)
                     )
+                case .serial_details:
+                    SerialDetailsView(
+                        $navigateToNextView,
+                        viewModel: SerialDetailsViewModel()
+                    )
+                    .navigationBarBackButtonHidden(true)
+                case .por_location:
+                    if #available(iOS 14.0, *) {
+                        PORLocationView(
+                            $navigateToNextView,
+                            viewModel: PORLocationViewModel()
+                        )
+                    }
                 default:
                     EmptyView()
                 }
