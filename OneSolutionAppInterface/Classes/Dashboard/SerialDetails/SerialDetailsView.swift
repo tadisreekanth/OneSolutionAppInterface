@@ -8,7 +8,6 @@
 import SwiftUI
 import OneSolutionUtility
 import OneSolutionTextField
-import OneSolutionAPI
 
 struct SerialDetailsView: View {
     @Binding var showSelf: String?

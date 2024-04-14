@@ -59,7 +59,9 @@ public struct HomeView: View {
                 case .process_workorder:
                     EmptyView()
                     if #available(iOS 14.0, *) {
-                        ProcessWorkOrderView(showSelf: $navigateToNextView)
+                        ProcessWorkOrderView(
+                            viewModel: ProcessWorkOrderViewModel(showSelf: $navigateToNextView)
+                        )
                     } else {
                         // Fallback on earlier versions
                     }
@@ -80,6 +82,10 @@ public struct HomeView: View {
                             viewModel: PORLocationViewModel()
                         )
                     }
+                case .general_checklist:
+                    ChecklistsView(
+                        showSelf: $navigateToNextView
+                    )
                 default:
                     EmptyView()
                 }

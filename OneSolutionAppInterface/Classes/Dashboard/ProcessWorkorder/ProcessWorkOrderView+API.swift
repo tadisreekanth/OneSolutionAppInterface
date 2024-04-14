@@ -12,42 +12,42 @@ import OneSolutionAPI
 
 @available(iOS 14.0, *)
 extension ProcessWorkOrderView {    
-    func getWorkOrders (referenceName: String = ScanKey.cargoId.rawValue,
-                        barcodeUnique: String = "",
-                        searchText: String = "",
-                        serviceGroupId: Int = 0,
-                        page: Int = 0,
-                        companyId:Int = 0,
-                        methodId:Int = 0) async {
-        
-        let params = NSMutableDictionary ()
-        params.setValue(referenceName, forKey: "referenceName")
-        params.setValue(searchText, forKey: "refSearchTxt")
-        params.setValue(serviceGroupId, forKey: "epcServiceGroupId")
-        params.setValue(page*pageLimit, forKey: "fromRecord")
-        params.setValue(pageLimit, forKey: "toRecord")
-        params.setValue(barcodeUnique, forKey: ScanKey.barcodeUnique.rawValue)
-        params.setValue(tfEstDateViewModel.userInput, forKey: "expectedDate")
-        params.setValue(companyId, forKey: "companyId")
-        params.setValue(methodId, forKey: "methodId")
-                
-                
-        if let path = Bundle.main.path(forResource: "WorkoderResponse", ofType: "json") {
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-                do {
-                    let jsonResult = try JSONDecoder().decode(WorkOrderModel.self, from: data)
-                    self.workOrders = jsonResult.workOrders
-                } catch let error1 {
-                    print(log: error1.localizedDescription)
-                }
-                // do stuff
-            } catch let error {
-                // handle error
-                print(log: error.localizedDescription)
-            }
-        }
-        
+//    func getWorkOrders (referenceName: String = ScanKey.cargoId.rawValue,
+//                        barcodeUnique: String = "",
+//                        searchText: String = "",
+//                        serviceGroupId: Int = 0,
+//                        page: Int = 0,
+//                        companyId:Int = 0,
+//                        methodId:Int = 0) async {
+//        
+//        let params = NSMutableDictionary ()
+//        params.setValue(referenceName, forKey: "referenceName")
+//        params.setValue(searchText, forKey: "refSearchTxt")
+//        params.setValue(serviceGroupId, forKey: "epcServiceGroupId")
+//        params.setValue(page*viewModel.pageLimit, forKey: "fromRecord")
+//        params.setValue(viewModel.pageLimit, forKey: "toRecord")
+//        params.setValue(barcodeUnique, forKey: ScanKey.barcodeUnique.rawValue)
+//        params.setValue(viewModel.tfEstDateViewModel.userInput, forKey: "expectedDate")
+//        params.setValue(companyId, forKey: "companyId")
+//        params.setValue(methodId, forKey: "methodId")
+//                
+//                
+//        if let path = Bundle.main.path(forResource: "WorkoderResponse", ofType: "json") {
+//            do {
+//                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+//                do {
+//                    let jsonResult = try JSONDecoder().decode(WorkOrderModel.self, from: data)
+//                    self.viewModel.workOrders = jsonResult.workOrders
+//                } catch let error1 {
+//                    print(log: error1.localizedDescription)
+//                }
+//                // do stuff
+//            } catch let error {
+//                // handle error
+//                print(log: error.localizedDescription)
+//            }
+//        }
+//        
         
         
 //        ProgressPresenter.shared.showProgress()
@@ -124,5 +124,5 @@ extension ProcessWorkOrderView {
 //
 //        }, progress: nil)
         
-    }
+//    }
 }

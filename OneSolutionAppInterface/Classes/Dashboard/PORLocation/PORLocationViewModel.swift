@@ -488,6 +488,5 @@ extension PORLocationViewModel {
                 self.previousLocations = nil
             }
         }
-        
     }
 }

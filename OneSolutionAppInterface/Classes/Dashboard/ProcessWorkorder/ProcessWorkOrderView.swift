@@ -12,79 +12,30 @@ import OneSolutionTextField
 
 @available(iOS 14.0, *)
 struct ProcessWorkOrderView: View {
-    @Binding var showSelf: String?
+    @ObservedObject var viewModel: ProcessWorkOrderViewModel
     
-    var tfReferenceViewModel: OneSolutionTextFieldViewModel
-    var tfSerialViewModel: OneSolutionTextFieldViewModel
-    var tfSiteViewModel: OneSolutionTextFieldViewModel
-    var tfServiceGroupViewModel: OneSolutionTextFieldViewModel
-    var tfMethodOutViewModel: OneSolutionTextFieldViewModel
-    var tfEstDateViewModel: OneSolutionTextFieldViewModel
+    @State var footerScrollOffset: CGFloat = 0
     
-    @State var collectionPagesCount: Int = 0
-    @State var selectedPage: Int = 0
-    @State var pageLimit: Int = 50
     
-    @State private var expandedList: Set<WorkOrder> = []
-    @State var workOrders: [WorkOrder]?
-    
-    init(showSelf: Binding<String?>) {
-        self._showSelf = showSelf
-        
-        self.tfReferenceViewModel = OneSolutionTextFieldViewModel(input: "",
-                                                                  placeholder: "Please select reference",
-                                                                  showRightView: true,
-                                                                  rightIcon: .down_arrow,
-                                                                  showClear: true)
-        
-        self.tfSerialViewModel =  OneSolutionTextFieldViewModel(input: "",
-                                                                placeholder: "SERIAL #",
-                                                                showRightView: true,
-                                                                rightIcon: .camera,
-                                                                showClear: true,
-                                                                objectType: Serial.self)
-        
-        self.tfSiteViewModel = OneSolutionTextFieldViewModel(input: "",
-                                                             placeholder: "Touch here to type",
-                                                             showRightView: true,
-                                                             rightIcon: .down_arrow,
-                                                             showClear: true)
-        
-        self.tfServiceGroupViewModel = OneSolutionTextFieldViewModel(input: "",
-                                                                     placeholder: "Touch here to type",
-                                                                     showRightView: true,
-                                                                     rightIcon: .down_arrow,
-                                                                     showClear: true)
-        
-        self.tfMethodOutViewModel = OneSolutionTextFieldViewModel(input: "",
-                                                                  placeholder: "Touch here to type",
-                                                                  showRightView: true,
-                                                                  rightIcon: .down_arrow,
-                                                                  showClear: true)
-        
-        self.tfEstDateViewModel = OneSolutionTextFieldViewModel(input: "",
-                                                                placeholder: "Please select Date",
-                                                                showRightView: true,
-                                                                rightIcon: .calender,
-                                                                showClear: true)
+    init(viewModel: ProcessWorkOrderViewModel) {
+        self.viewModel = viewModel
     }
-    
     
     var body: some View {
         OneSolutionBaseView {
             HeaderView(back: (true, {
-                self.showSelf = ""
+                self.viewModel.showSelf = ""
             }), home: (true, {
-                self.showSelf = ""
+                self.viewModel.showSelf = ""
             }), title: "Process WorkOrder")
             
             ScrollView(.vertical, showsIndicators: true) {
-                topView
-                    .padding(.leading, 10)
-                    .padding(.trailing, 10)
-                workordersView
-                    .padding(.leading, 10)
-                    .padding(.trailing, 10)
+                VStack {
+                    topView
+                    
+                    workordersView
+                }
+                .padding(.horizontal, 10)
             }
             Spacer()
             
@@ -93,9 +44,8 @@ struct ProcessWorkOrderView: View {
         }
         .onAppear {
             updateTextFieldsValues()
-            Task {
-                await self.getWorkOrders()
-            }
+            
+            viewModel.getWorkOrders()
         }
     }
 }
@@ -109,34 +59,34 @@ extension ProcessWorkOrderView {
                 VStack (alignment: .leading, spacing: 5) {
                     Text("Reference")
                     OneSolutionTextField(
-                        viewModel: tfReferenceViewModel
+                        viewModel: viewModel.tfReferenceViewModel
                     )
                     OneSolutionTextField(
-                        viewModel: tfSerialViewModel
+                        viewModel: viewModel.tfSerialViewModel
                     )
                 }
                 HStack {
                     Text("Site")
                     OneSolutionTextField(
-                        viewModel: tfSiteViewModel
+                        viewModel: viewModel.tfSiteViewModel
                     )
                 }
                 HStack {
                     Text("Service Group")
                     OneSolutionTextField(
-                        viewModel: tfServiceGroupViewModel
+                        viewModel: viewModel.tfServiceGroupViewModel
                     )
                 }
                 HStack {
                     Text("Method Out")
                     OneSolutionTextField(
-                        viewModel: tfMethodOutViewModel
+                        viewModel: viewModel.tfMethodOutViewModel
                     )
                 }
                 HStack {
                     Text("Est Date #")
                     OneSolutionTextField(
-                        viewModel: tfEstDateViewModel
+                        viewModel: viewModel.tfEstDateViewModel
                     )
                 }
             }
@@ -147,11 +97,11 @@ extension ProcessWorkOrderView {
     
     var workordersView: some View {
         //        LazyVGrid(columns: [GridItem()]) {
-        if let workOrders = workOrders {
+        if let workOrders = viewModel.workOrders {
             return AnyView(ForEach (workOrders, id:\.uuid) { item in
                 Section {
                     VStack(alignment: .leading, spacing: 4) {
-                        if self.expandedList.contains(item), let childs = item.childs {
+                        if self.viewModel.expandedList.contains(item), let childs = item.childs {
                             ForEach(childs, id:\.uuid) { child in
                                 let text = self.workOrderChildText(with: child, workOrder: item)
                                 HStack {
@@ -169,16 +119,16 @@ extension ProcessWorkOrderView {
                         }
                     }
                 } header: {
-                    let isExpanded = self.expandedList.contains(item)
+                    let isExpanded = self.viewModel.expandedList.contains(item)
                     WorkOrderHeader(workorder: item, openAction: {
                         
                     }, checkListAction: {
                         
                     }, expandAction: {
-                        if self.expandedList.contains(item) {
-                            self.expandedList.remove(item)
+                        if self.viewModel.expandedList.contains(item) {
+                            self.viewModel.expandedList.remove(item)
                         } else {
-                            self.expandedList.insert(item)
+                            self.viewModel.expandedList.insert(item)
                         }
                     }, isExpanded: isExpanded)
                     .whiteBackground()
@@ -200,18 +150,37 @@ extension ProcessWorkOrderView {
                     
                 }
             
-            ScrollView(.horizontal, showsIndicators: true) {
-                LazyHStack {
-                    ForEach(0..<30) { i in
-                        Text("\(i)")
-                            .basicWidth()
-                            .frame(height: 30)
-                            .background(Color.app_white)
-                            .cornerRadius(viewCornerRadius)
+            ScrollViewReader { scrollViewProxy in
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach(1..<30) { i in
+                            Button {
+                                viewModel.onFooterPageSelected(index: i)
+                            } label: {
+                                Text("\(i)")
+                                    .basicWidth()
+                                    .frame(height: 30)
+                                    .background(Color.app_white)
+                                    .cornerRadius(viewCornerRadius)
+                                    .onAppear {
+                                        print("visible index \(i)")
+                                    }
+                            }
+                        }
                     }
+                    .background(
+                        GeometryReader { geometry in
+                            Color.clear
+                                .onChange(of: geometry.frame(in: .global).minY) { newValue in
+                                    footerScrollOffset = newValue
+                                    // Perform actions based on scroll position change
+                                    print("New scroll offset: \(newValue)")
+                                }
+                        }
+                    )
                 }
+                .basicHeight()
             }
-            .basicHeight()
             
             AssetIcon.right_arrow_green.image
                 .frame(maxWidth: 22, maxHeight: 22, alignment: .trailing)
